@@ -1,0 +1,127 @@
+class SearchPeople;
+
+
+
+
+string path = "DataFile.txt";
+ifstream fin;
+list<SearchPeople> listP;
+int menu;
+
+
+template <typename T>
+void WriteDataToFile(string path, list<T> lst) {
+	ofstream file;
+	file.open(path, ios::app);
+	if (!file.is_open()) {
+		throw exception("I can't open file ");
+	}
+	for (auto element : lst) {
+		file.write((char*)&element, sizeof(lst));
+	}
+	file.close();
+}
+
+template <typename T>
+void ReadDataFromDB(string path, list<T> lst) {
+	ifstream fin;
+	fin.open(path);
+	if (!fin.is_open()) {
+		throw exception("I can't open file");
+	}
+	SearchPeople sp;
+	while (fin.read((char*)&sp, sizeof(lst))) {
+
+	}
+}
+
+class SearchPeople {
+public:
+	SearchPeople()
+	{
+		
+	}
+	SearchPeople(string name)
+	{
+		this->name = name;
+		this->surname = " ";
+		this->age = 0;
+		this->sex = " ";
+		ID++;
+		personalID = ID;
+	}
+	SearchPeople(string name, string surname):SearchPeople(name)
+	{
+		this->surname = surname;
+	}
+	SearchPeople(string name, string surname,int age):SearchPeople(name,surname)
+	{
+		this->age = age;
+	}
+	SearchPeople(string name, string surname, int age, string sex):SearchPeople(name,surname,age)
+	{
+		this->sex = sex;
+	}
+	void Print() {
+		cout << "Name: " << name << "\nSurname: " << surname<<"ID: "<<personalID<< "\nAge: " << age << "\nSex: " << sex;
+	}
+
+	string GetName() { return name; }
+	string GetSurname() { return surname; }
+	string GetSex() { return sex; }
+	int GetAge() { return age; }
+	int GetID() { return personalID; }
+private:
+	string name;
+	string surname;
+	string sex;
+	int age;
+	static int ID;
+	int personalID = 0;
+};
+int SearchPeople::ID = 0;
+
+
+
+
+int main()
+{
+	cout << "=================== Witam w systemie poszuku ludzi! =================== " << endl;
+
+	do
+	{
+		cout << "Glowne MENU: " << endl
+			<< "1.Szukać czlowieka w bazie danych. " << endl
+			<< "2.Dodać czlowieka do bazy danych. " << endl
+			<< "3.Usunać czlowieka z bazy danych. " << endl
+			<< "4.Wyswitlić dane o jednym czlowiekie. " << endl
+			<< "5.Posortować baze danych za alphabetem. " << endl
+			<< "6.Wyswietlić wszystkizh ludzi, z bazy danych. " << endl
+			<< "7.Wyjsć z aplikacji." << endl;
+		cin >> menu;
+
+		switch (menu)
+		{
+		case 1:
+			/*cout << "Pan wybral punkt numer 1." << endl
+				<< "Żeby znajsć czlowieka, trzeba wpisać jego Imie, Nazwisko oraz ID." << endl;
+			string name, surname;
+			int id;
+			cin >> name >> surname >> id;
+			auto it = find(listP.begin(), listP.end(), [&](SearchPeople& sp1) { return sp1.GetName() == name && sp1.GetSurname() == surname && sp1.GetID() == id; });
+			if (it == listP.end()) {
+				cout << "W naszej bazie nie ma informacji o takim czlowiekie " << endl;
+			}
+			else {
+				it->Print();
+			}
+			break;*/
+		case 5:
+			sort(listP.begin(), listP.end(), [](SearchPeople& sp1, SearchPeople& sp2)
+				{ return sp1.GetName() < sp2.GetName();
+				});
+		}
+
+	} while (true);
+	return 0;
+}
